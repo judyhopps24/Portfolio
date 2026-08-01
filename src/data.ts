@@ -213,7 +213,7 @@ export const getProjectsList = (): ProjectItem[] => {
         "Handled strict YouTube API quota limitations by implementing intelligent local caching of comment threads and pagination tokens.",
         "Designed robust schema validations and error recovery strategies for agentic tool calls to prevent AI hallucination during comment posting."
       ],
-      github_repo: "https://github.com/judyhopps24/youtube-comment-manager-mcp",
+      github_repo: "https://github.com/judyhopps24/Youtube-Comments-Manager",
       live_demo_api: "https://api.sristi.dev/v1/projects/youtube-comment-manager-mcp/specs",
       detailed_documentation: "https://docs.sristi.dev/architecture/youtube-comment-mcp",
       metric: "5x faster comment triage via AI agent protocol"
