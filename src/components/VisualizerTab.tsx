@@ -91,17 +91,20 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
               Sristi's RESTful API Service
             </h1>
             <p className="text-gh-mute max-w-xl text-sm mb-4">
-              Welcome to the backend engineering interface. Everything you see here operates on fully structured API schemas. Click around to execute queries, inspect variables, or view custom architectural documentations.
+              This service serves information about my skills, experience, and projects. You can query this service to by clicking on the API you want to hit from the left nav bar and it would automatically
+              get populated in the search bar on the top of this page. Just click "SEND" to execute the query!
+              Happy Querying!
+
             </p>
             <div className="flex flex-wrap gap-3">
-              <button 
+              <button
                 id="btn-vis-about"
                 onClick={() => onNavigate("/about")}
                 className="px-4 py-2 rounded bg-gh-green hover:bg-gh-green-hover text-white font-medium text-xs font-sans transition duration-200 cursor-pointer"
               >
                 GET /about me
               </button>
-              <button 
+              <button
                 id="btn-vis-projects"
                 onClick={() => onNavigate("/projects")}
                 className="px-4 py-2 rounded bg-[#21262d] hover:bg-[#30363d] border border-gh-border font-medium text-xs font-mono text-white transition duration-200 cursor-pointer"
