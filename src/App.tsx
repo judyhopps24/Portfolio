@@ -513,7 +513,7 @@ export default function App() {
       </header>
 
       {/* Main Core API Ingress Dual Panel */}
-      <div className="flex-grow flex flex-col lg:flex-row overflow-hidden">
+      <div className="flex-grow flex flex-col lg:flex-row overflow-hidden lg:h-[calc(100vh-42px)]">
         
         {/* Left Sidebar block */}
         <div 
@@ -534,14 +534,15 @@ export default function App() {
         {isLargeScreen && (
           <div
             onMouseDown={startResizingSidebar}
-            className="w-1 bg-gh-border hover:bg-[#1f6feb]/70 active:bg-[#1f6feb] transition-colors cursor-col-resize flex-shrink-0 relative group h-full"
+            className="w-2 flex-shrink-0 cursor-col-resize relative group flex items-center justify-center h-full"
           >
+            <div className="h-full w-[2px] bg-gh-border group-hover:bg-[#1f6feb]/70 group-active:bg-[#1f6feb] transition-colors" />
             <div className="absolute inset-y-0 -left-1 -right-1 cursor-col-resize z-50" />
           </div>
         )}
 
         {/* Right workspace panel */}
-        <div className="flex-grow p-4 flex flex-col overflow-hidden lg:h-[calc(100vh-42px)] min-w-0">
+        <div className="flex-grow p-4 flex flex-col overflow-hidden h-full min-w-0">
           
           {/* Postman-like URL Request panel */}
           <div 
