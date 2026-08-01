@@ -1,0 +1,6 @@
+{
+  "name": "API Portfolio",
+  "description": "An interactive backend developer portfolio designed as a functional REST API client with live requests and JSON responses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
