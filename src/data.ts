@@ -5,7 +5,7 @@ export const developerAbout: AboutInfo = {
   title: "Software Development Engineer | Distributed Systems & Backend Architect",
   tagline: "Architecting high-performance distributed systems, low-latency microservices, and AI infrastructure.",
   bio: "Software Development Engineer with 4 years of experience building large-scale distributed systems and backend services for millions. Deep expertise in microservices architecture, event-driven systems, observability, and databases. Proficient in AWS infrastructure and CI/CD pipelines, optimizing API latency, LLM orchestration, and full-stack development.",
-  avatarUrl: "/Sristi.png",
+  avatarUrl: "/Sristi-profile.png",
   experienceYears: 4,
   location: "Bengaluru, India",
   philosophy: "I prioritize fault tolerance, low latency, robust observability, and architecting scalable systems that gracefully handle extreme concurrency.",
