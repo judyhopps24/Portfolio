@@ -148,7 +148,10 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   // 2. About Route Visualizer
   if (path === "/about") {
     const info = data as AboutInfo;
-    const avatarPath = info.avatarUrl || "/sristi.svg";
+    const base = import.meta.env.BASE_URL;
+    const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+    const rawAvatar = info.avatarUrl || "/sristi.svg";
+    const avatarPath = rawAvatar.startsWith('/') ? `${cleanBase}${rawAvatar}` : `${cleanBase}/${rawAvatar}`;
 
     return (
       <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
@@ -162,7 +165,7 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                 className="w-36 h-48 sm:w-40 sm:h-52 object-cover object-top"
                 referrerPolicy="no-referrer"
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = "/sristi.svg";
+                  (e.currentTarget as HTMLImageElement).src = `${cleanBase}/sristi.svg`;
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
