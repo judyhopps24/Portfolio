@@ -45,7 +45,7 @@ export const TerminalLogs: React.FC<TerminalLogsProps> = ({ logs, onClear }) => 
   };
 
   return (
-    <div className="bg-[#0b0f19] border border-gh-border rounded-lg overflow-hidden font-mono shadow-inner animate-fadeIn">
+    <div className="bg-[#0b0f19] border border-gh-border rounded-lg overflow-hidden font-mono shadow-inner animate-fadeIn flex flex-col h-full">
       {/* Logger Toolbar */}
       <div className="bg-gh-panel border-b border-gh-border px-4 py-2.5 flex justify-between items-center text-xs text-gh-mute">
         <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export const TerminalLogs: React.FC<TerminalLogsProps> = ({ logs, onClear }) => 
       </div>
 
       {/* Terminal Rows */}
-      <div className="p-4 h-48 overflow-y-auto text-xs leading-relaxed space-y-1 bg-[#0d1117]">
+      <div className="p-4 flex-grow overflow-y-auto text-xs leading-relaxed space-y-1 bg-[#0d1117] min-h-[80px]">
         {logs.map((log, i) => (
           <div key={i} className="font-mono text-[11px] whitespace-pre-wrap select-all selection:bg-gh-active-bg">
             <span className="text-gh-mute mr-2 select-none">[{i + 1}]</span>

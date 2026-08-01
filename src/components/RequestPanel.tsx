@@ -97,7 +97,7 @@ export const RequestPanel: React.FC<RequestPanelProps> = ({
   };
 
   return (
-    <div className="bg-gh-panel border border-gh-border rounded-lg overflow-hidden font-mono shadow-sm animate-fadeIn">
+    <div className="bg-gh-panel border border-gh-border rounded-lg overflow-hidden font-mono shadow-sm animate-fadeIn flex flex-col h-full">
       {/* URL Ingress Bar */}
       <div className="p-4 border-b border-gh-border bg-gh-panel flex items-center gap-2">
         {/* Method Badge Indicator */}
@@ -191,7 +191,7 @@ export const RequestPanel: React.FC<RequestPanelProps> = ({
       </div>
 
       {/* Variables Workspace Content Pane */}
-      <div className="p-4 bg-[#0d1117] h-44 overflow-y-auto">
+      <div className="p-4 bg-[#0d1117] flex-grow overflow-y-auto min-h-[120px]">
         
         {/* PARAMS WORKSPACE */}
         {activeTab === "params" && (

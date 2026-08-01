@@ -202,7 +202,7 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
   };
 
   return (
-    <div className="bg-gh-panel border border-gh-border rounded-lg overflow-hidden shadow-sm animate-fadeIn flex flex-col flex-grow min-h-[420px]">
+    <div className="bg-gh-panel border border-gh-border rounded-lg overflow-hidden shadow-sm animate-fadeIn flex flex-col flex-grow min-h-[120px]">
       
       {/* Response Status Card */}
       <div className="p-4 border-b border-gh-border bg-gh-panel flex flex-wrap gap-4 items-center justify-between">

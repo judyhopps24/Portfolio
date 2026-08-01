@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Server, Terminal as TerminalIcon, Play, Code2, ShieldAlert, Cpu } from "lucide-react";
 import { Sidebar } from "./components/Sidebar";
 import { RequestPanel } from "./components/RequestPanel";
@@ -19,6 +19,94 @@ import { QueryParamRow, HeaderRow, ContactMessage, ProjectItem } from "./types";
 import { generateRandomLog } from "./utils";
 
 export default function App() {
+  // Resize states
+  const [sidebarWidth, setSidebarWidth] = useState<number>(280);
+  const [requestHeight, setRequestHeight] = useState<number>(240);
+  const [logsHeight, setLogsHeight] = useState<number>(180);
+  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(
+    typeof window !== "undefined" ? window.innerWidth >= 1024 : true
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const startResizingSidebar = (mouseDownEvent: React.MouseEvent) => {
+    mouseDownEvent.preventDefault();
+    const startWidth = sidebarWidth;
+    const startX = mouseDownEvent.clientX;
+
+    const doDrag = (mouseMoveEvent: MouseEvent) => {
+      const deltaX = mouseMoveEvent.clientX - startX;
+      const newWidth = startWidth + deltaX;
+      if (newWidth >= 200 && newWidth <= 600) {
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const stopDrag = () => {
+      document.removeEventListener("mousemove", doDrag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.body.style.cursor = "default";
+    };
+
+    document.addEventListener("mousemove", doDrag);
+    document.addEventListener("mouseup", stopDrag);
+    document.body.style.cursor = "col-resize";
+  };
+
+  const startResizingRequest = (mouseDownEvent: React.MouseEvent) => {
+    mouseDownEvent.preventDefault();
+    const startHeight = requestHeight;
+    const startY = mouseDownEvent.clientY;
+
+    const doDrag = (mouseMoveEvent: MouseEvent) => {
+      const deltaY = mouseMoveEvent.clientY - startY;
+      const newHeight = startHeight + deltaY;
+      if (newHeight >= 120 && newHeight <= 600) {
+        setRequestHeight(newHeight);
+      }
+    };
+
+    const stopDrag = () => {
+      document.removeEventListener("mousemove", doDrag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.body.style.cursor = "default";
+    };
+
+    document.addEventListener("mousemove", doDrag);
+    document.addEventListener("mouseup", stopDrag);
+    document.body.style.cursor = "row-resize";
+  };
+
+  const startResizingLogs = (mouseDownEvent: React.MouseEvent) => {
+    mouseDownEvent.preventDefault();
+    const startHeight = logsHeight;
+    const startY = mouseDownEvent.clientY;
+
+    const doDrag = (mouseMoveEvent: MouseEvent) => {
+      const deltaY = mouseMoveEvent.clientY - startY;
+      const newHeight = startHeight - deltaY;
+      if (newHeight >= 100 && newHeight <= 500) {
+        setLogsHeight(newHeight);
+      }
+    };
+
+    const stopDrag = () => {
+      document.removeEventListener("mousemove", doDrag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.body.style.cursor = "default";
+    };
+
+    document.addEventListener("mousemove", doDrag);
+    document.addEventListener("mouseup", stopDrag);
+    document.body.style.cursor = "row-resize";
+  };
+
   const [activePath, setActivePath] = useState<string>("/");
   const [authToken, setAuthToken] = useState<string>("recruiter_bearer_sristi_dev");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -425,10 +513,13 @@ export default function App() {
       </header>
 
       {/* Main Core API Ingress Dual Panel */}
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+      <div className="flex-grow flex flex-col lg:flex-row overflow-hidden">
         
-        {/* Left Sidebar block (3 spans) */}
-        <div className="lg:col-span-3 border-b lg:border-b-0 border-gh-border">
+        {/* Left Sidebar block */}
+        <div 
+          style={{ width: isLargeScreen ? `${sidebarWidth}px` : "100%" }}
+          className="border-b lg:border-b-0 lg:border-r border-gh-border flex-shrink-0 flex flex-col overflow-hidden"
+        >
           <Sidebar 
             endpoints={apiEndpoints}
             activePath={activePath}
@@ -439,39 +530,81 @@ export default function App() {
           />
         </div>
 
-        {/* Right workspace panel (9 spans) */}
-        <div className="lg:col-span-9 p-4 space-y-4 flex flex-col overflow-y-auto max-h-[calc(100vh-42px)]">
+        {/* Sidebar Vertical Resizer */}
+        {isLargeScreen && (
+          <div
+            onMouseDown={startResizingSidebar}
+            className="w-1 bg-gh-border hover:bg-[#1f6feb]/70 active:bg-[#1f6feb] transition-colors cursor-col-resize flex-shrink-0 relative group h-full"
+          >
+            <div className="absolute inset-y-0 -left-1 -right-1 cursor-col-resize z-50" />
+          </div>
+        )}
+
+        {/* Right workspace panel */}
+        <div className="flex-grow p-4 flex flex-col overflow-hidden lg:h-[calc(100vh-42px)] min-w-0">
           
           {/* Postman-like URL Request panel */}
-          <RequestPanel 
-            method={activePath === "/contact" ? "POST" : "GET"}
-            path={activePath}
-            onSend={handleSendAPI}
-            isLoading={isLoading}
-            onPathChange={setActivePath}
-            queryParams={queryParams}
-            setQueryParams={setQueryParams}
-            headers={headers}
-            setHeaders={setHeaders}
-            bodyJson={bodyJson}
-            setBodyJson={setBodyJson}
-          />
+          <div 
+            style={{ height: isLargeScreen ? `${requestHeight}px` : "auto" }} 
+            className="flex-shrink-0 overflow-hidden mb-4 lg:mb-0"
+          >
+            <RequestPanel 
+              method={activePath === "/contact" ? "POST" : "GET"}
+              path={activePath}
+              onSend={handleSendAPI}
+              isLoading={isLoading}
+              onPathChange={setActivePath}
+              queryParams={queryParams}
+              setQueryParams={setQueryParams}
+              headers={headers}
+              setHeaders={setHeaders}
+              bodyJson={bodyJson}
+              setBodyJson={setBodyJson}
+            />
+          </div>
+
+          {/* Request-to-Response Horizontal Resizer */}
+          {isLargeScreen && (
+            <div
+              onMouseDown={startResizingRequest}
+              className="h-2 flex-shrink-0 cursor-row-resize relative group flex items-center justify-center"
+            >
+              <div className="w-full h-[2px] bg-[#30363d] group-hover:bg-[#1f6feb]/70 group-active:bg-[#1f6feb] transition-colors" />
+              <div className="absolute inset-x-0 -top-1 -bottom-1 cursor-row-resize z-50" />
+            </div>
+          )}
 
           {/* Response Payload dashboard panel */}
-          <ResponsePanel 
-            path={responseState.path}
-            statusCode={responseState.statusCode}
-            statusText={responseState.statusText}
-            latencyMs={responseState.latencyMs}
-            sizeBytes={responseState.sizeBytes}
-            responsePayload={responseState.payload}
-            onNavigate={handleSelectEndpoint}
-            onPostMessage={handleVisualizerPostMessage}
-            messagesList={messagesList}
-          />
+          <div className="flex-grow overflow-hidden flex flex-col min-h-0 mb-4 lg:mb-0">
+            <ResponsePanel 
+              path={responseState.path}
+              statusCode={responseState.statusCode}
+              statusText={responseState.statusText}
+              latencyMs={responseState.latencyMs}
+              sizeBytes={responseState.sizeBytes}
+              responsePayload={responseState.payload}
+              onNavigate={handleSelectEndpoint}
+              onPostMessage={handleVisualizerPostMessage}
+              messagesList={messagesList}
+            />
+          </div>
+
+          {/* Response-to-Logs Horizontal Resizer */}
+          {isLargeScreen && (
+            <div
+              onMouseDown={startResizingLogs}
+              className="h-2 flex-shrink-0 cursor-row-resize relative group flex items-center justify-center mt-2"
+            >
+              <div className="w-full h-[2px] bg-[#30363d] group-hover:bg-[#1f6feb]/70 group-active:bg-[#1f6feb] transition-colors" />
+              <div className="absolute inset-x-0 -top-1 -bottom-1 cursor-row-resize z-50" />
+            </div>
+          )}
 
           {/* Running stdout container trace terminal logged to bottom */}
-          <div className="pt-2">
+          <div 
+            style={{ height: isLargeScreen ? `${logsHeight}px` : "auto" }}
+            className="flex-shrink-0 overflow-hidden"
+          >
             <TerminalLogs 
               logs={logs}
               onClear={() => setLogs([])}
