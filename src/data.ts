@@ -282,6 +282,7 @@ export const apiEndpoints: ApiEndpoint[] = [
   { path: "/experience", method: "GET", description: "Query full work experience history & education details", category: "Experience" },
   { path: "/experience/amazon-alexa", method: "GET", description: "Fetch engineering impact & telemetry work at Amazon Alexa", category: "Experience" },
   { path: "/experience/amazon-music", method: "GET", description: "Fetch pipeline redesign, TDP Lambda & LLM work at Amazon Music", category: "Experience" },
+  { path: "/experience/amazon-music-intern", method: "GET", description: "Fetch localization & locale-gating feature flag intern work at Amazon Music", category: "Experience" },
   { path: "/experience/microsoft", method: "GET", description: "Fetch Azure Synapse pipeline work at Microsoft", category: "Experience" },
   { path: "/skills", method: "GET", description: "Inspect grouped languages, frameworks, and databases stack", category: "Stack" },
   { path: "/projects", method: "GET", description: "Query a list of backend and infrastructure projects", category: "Projects" },
