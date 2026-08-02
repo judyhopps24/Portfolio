@@ -780,7 +780,7 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
               <label className="text-[9px] uppercase font-bold text-gh-mute tracking-wider block">message_string *</label>
               <textarea 
                 rows={3}
-                placeholder="Write message details... E.g. 'Hey Sristi, we want to interview you for a senior backend position!'" 
+                placeholder="Write message details... e.g. 'Hi Sristi, I'd love to connect to chat about backend systems and potential opportunities.'" 
                 value={contactForm.message}
                 onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
                 className="w-full px-3 py-2 text-xs text-white bg-[#090b10] rounded-md border border-gh-border outline-none focus:border-indigo-500/60 focus:shadow-[0_0_8px_rgba(99,102,241,0.1)] transition font-mono resize-none leading-relaxed shadow-inner"

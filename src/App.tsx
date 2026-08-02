@@ -199,9 +199,9 @@ export default function App() {
     // Set sample draft body inside JSON console for contact route
     if (path === "/contact") {
       setBodyJson(JSON.stringify({
-        name: "Recruiter Corp",
-        email: "hiring@innovator.io",
-        message: "Hi Sristi, we checked out your API client portfolio and are highly impressed. Let's schedule a backend code interview!"
+        name: "Acme Corp",
+        email: "hiring@acme.io",
+        message: "Hi Sristi, I visited your interactive API portfolio and would love to connect to discuss backend engineering opportunities."
       }, null, 2));
     }
   };
