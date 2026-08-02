@@ -1,34 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --color-gh-bg: #0d1117;
-  --color-gh-panel: #161b22;
-  --color-gh-border: #30363d;
-  --color-gh-text: #c9d1d9;
-  --color-gh-mute: #8b949e;
-  --color-gh-blue: #1f6feb;
-  --color-gh-active-bg: rgba(31, 111, 235, 0.15);
-  --color-gh-green: #238636;
-  --color-gh-green-hover: #2ea043;
+  
+  /* Retain naming to minimize breakages but map to premium slate-navy palette */
+  --color-gh-bg: #090b10;
+  --color-gh-panel: #11141a;
+  --color-gh-border: #1e2530;
+  --color-gh-text: #e2e8f0; /* slate-200 */
+  --color-gh-mute: #64748b; /* slate-500 */
+  --color-gh-blue: #6366f1; /* Indigo accent */
+  --color-gh-active-bg: rgba(99, 102, 241, 0.12);
+  --color-gh-green: #10b981; /* Emerald success */
+  --color-gh-green-hover: #34d399;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-gh-bg);
+    color: var(--color-gh-text);
+  }
+  
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 
 @layer utilities {
   .animate-fadeIn {
-    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .glassmorphism {
+    background: rgba(17, 20, 26, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .premium-shadow {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .premium-glow-indigo {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+  }
+
+  .premium-glow-emerald {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(2px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 

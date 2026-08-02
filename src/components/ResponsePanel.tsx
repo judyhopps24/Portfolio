@@ -30,9 +30,9 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
   const [activeTab, setActiveTab] = useState<"visualizer" | "json" | "docs">("visualizer");
 
   const getStatusColor = (code: number) => {
-    if (code >= 200 && code < 300) return "text-[#7ee787] bg-[#7ee787]/10 border-[#7ee787]/20";
-    if (code >= 300 && code < 400) return "text-[#58a6ff] bg-[#58a6ff]/10 border-[#58a6ff]/20";
-    return "text-rose-400 bg-rose-500/10 border-rose-500/20";
+    if (code >= 200 && code < 300) return "text-emerald-400 bg-emerald-400/5 border-emerald-500/15";
+    if (code >= 300 && code < 400) return "text-indigo-400 bg-indigo-400/5 border-indigo-500/15";
+    return "text-rose-400 bg-rose-450/5 border-rose-500/15";
   };
 
   const formatSize = (bytes: number) => {
@@ -120,32 +120,32 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
     };
 
     return (
-      <div className="space-y-4 font-mono text-[11.5px] text-gh-text animate-fadeIn">
-        <div className="p-4 rounded-lg bg-[#161b22] border border-gh-border">
-          <h4 className="font-semibold text-[#7ee787] mb-1">Route Specifications</h4>
-          <p className="text-gh-mute leading-relaxed text-xs">{currentSpec.desc}</p>
+      <div className="space-y-4 font-sans text-xs text-gh-text animate-fadeIn">
+        <div className="p-4 rounded-lg bg-[#11141a] border border-gh-border shadow-inner">
+          <h4 className="font-bold text-emerald-400 mb-1 font-mono text-[11px] uppercase tracking-wide">Route Specifications</h4>
+          <p className="text-slate-400 leading-relaxed text-xs">{currentSpec.desc}</p>
         </div>
 
         {currentSpec.queryParams && (
           <div className="space-y-2">
-            <h4 className="font-semibold text-[#58a6ff] flex items-center gap-1.5 uppercase tracking-wide text-[10px]">
+            <h4 className="font-bold text-indigo-400 flex items-center gap-1.5 uppercase tracking-wider text-[10px] font-mono">
               Query Parameters (?key=value)
             </h4>
-            <div className="border border-gh-border rounded-lg overflow-hidden">
-              <table className="w-full text-left font-mono bg-gh-panel">
+            <div className="border border-gh-border rounded-lg overflow-hidden shadow-sm">
+              <table className="w-full text-left font-sans bg-gh-panel">
                 <thead>
-                  <tr className="bg-[#0d1117] text-gh-mute border-b border-gh-border text-[10px]">
-                    <th className="p-2">Name</th>
-                    <th className="p-2">Type</th>
-                    <th className="p-2">Details / Filter behavior</th>
+                  <tr className="bg-[#090b10] text-gh-mute border-b border-gh-border text-[9.5px] uppercase font-bold tracking-wider">
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Type</th>
+                    <th className="p-3">Details / Filter behavior</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gh-border/50">
+                <tbody className="divide-y divide-gh-border/40 font-mono text-[11px]">
                   {currentSpec.queryParams.map((p, i) => (
-                    <tr key={i} className="text-[11px] text-gh-text">
-                      <td className="p-2 text-[#58a6ff] font-bold">{p.name}</td>
-                      <td className="p-2 text-[#d29922] font-bold">{p.type}</td>
-                      <td className="p-2 text-gh-mute">{p.desc}</td>
+                    <tr key={i} className="text-gh-text hover:bg-white/[0.01] transition-colors">
+                      <td className="p-3 text-indigo-400 font-bold">{p.name}</td>
+                      <td className="p-3 text-amber-500 font-semibold">{p.type}</td>
+                      <td className="p-3 text-slate-400 font-sans leading-relaxed">{p.desc}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -156,24 +156,24 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
 
         {currentSpec.headers && (
           <div className="space-y-2">
-            <h4 className="font-semibold text-[#d29922] flex items-center gap-1.5 uppercase tracking-wide text-[10px]">
+            <h4 className="font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider text-[10px] font-mono">
               Required Payload Headers
             </h4>
-            <div className="border border-gh-border rounded-lg overflow-hidden">
-              <table className="w-full text-left font-mono bg-gh-panel">
+            <div className="border border-gh-border rounded-lg overflow-hidden shadow-sm">
+              <table className="w-full text-left font-sans bg-gh-panel">
                 <thead>
-                  <tr className="bg-[#0d1117] text-gh-mute border-b border-gh-border text-[10px]">
-                    <th className="p-2">Header Name</th>
-                    <th className="p-2">Value Mapping</th>
-                    <th className="p-2">Constraint</th>
+                  <tr className="bg-[#090b10] text-gh-mute border-b border-gh-border text-[9.5px] uppercase font-bold tracking-wider">
+                    <th className="p-3">Header Name</th>
+                    <th className="p-3">Value Mapping</th>
+                    <th className="p-3">Constraint</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gh-border/50">
+                <tbody className="divide-y divide-gh-border/40 font-mono text-[11px]">
                   {currentSpec.headers.map((h, i) => (
-                    <tr key={i} className="text-[11px] text-gh-text">
-                      <td className="p-2 text-[#d29922] font-bold">{h.name}</td>
-                      <td className="p-2">{h.value}</td>
-                      <td className="p-2 truncate text-gh-mute">{h.required ? "REQUIRED" : "OPTIONAL"}</td>
+                    <tr key={i} className="text-gh-text hover:bg-white/[0.01] transition-colors">
+                      <td className="p-3 text-amber-450 font-bold">{h.name}</td>
+                      <td className="p-3 text-slate-200">{h.value}</td>
+                      <td className="p-3 truncate text-slate-400 font-sans">{h.required ? "REQUIRED" : "OPTIONAL"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -183,16 +183,16 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
         )}
 
         <div className="space-y-2">
-          <h4 className="font-semibold text-[#7ee787] flex items-center gap-1.5 uppercase tracking-wide text-[10px]">
+          <h4 className="font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-wider text-[10px] font-mono">
             Expected Responses
           </h4>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {Object.entries(currentSpec.responses).map(([code, desc]: [string, any], i) => (
-              <div key={i} className="p-2.5 rounded-lg bg-[#161b22] border border-gh-border flex items-center gap-3">
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#7ee787]/10 border border-[#7ee787]/20 text-[#7ee787] font-mono">
+              <div key={i} className="p-3 rounded-lg bg-[#11141a] border border-gh-border flex items-center gap-3 shadow-inner">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-400/5 border border-emerald-500/15 text-emerald-400 font-mono">
                   {code}
                 </span>
-                <span className="text-gh-text text-xs">{desc}</span>
+                <span className="text-slate-300 text-xs font-sans leading-relaxed">{desc}</span>
               </div>
             ))}
           </div>
@@ -207,67 +207,67 @@ export const ResponsePanel: React.FC<ResponsePanelProps> = ({
       {/* Response Status Card */}
       <div className="p-4 border-b border-gh-border bg-gh-panel flex flex-wrap gap-4 items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-gh-text uppercase font-mono">Response Payload</span>
+          <span className="text-xs font-bold text-white uppercase tracking-wider font-sans">Response Payload</span>
           {/* Real-time pulse indicator */}
-          <Activity size={14} className="text-[#7ee787] animate-pulse" />
+          <Activity size={13} className="text-emerald-400 animate-pulse" />
         </div>
 
         {/* Dynamic Meta Badges */}
-        <div className="flex flex-wrap items-center gap-2 font-mono text-[10.5px]">
-          <div className={`px-2.5 py-1 rounded border font-semibold flex items-center gap-1 ${getStatusColor(statusCode)}`}>
+        <div className="flex flex-wrap items-center gap-2 font-mono text-[10px]">
+          <div className={`px-2.5 py-1 rounded-md border font-semibold flex items-center gap-1 ${getStatusColor(statusCode)}`}>
             Status: {statusCode} {statusText}
           </div>
-          <div className="px-2.5 py-1 rounded border border-gh-border bg-[#0d1117] text-gh-text flex items-center gap-1">
-            <Clock size={11} className="text-[#58a6ff]" />
-            Time: <span className="font-bold text-[#58a6ff]">{latencyMs} ms</span>
+          <div className="px-2.5 py-1 rounded-md border border-gh-border bg-[#090b10] text-slate-300 flex items-center gap-1.5">
+            <Clock size={11} className="text-indigo-400" />
+            Time: <span className="font-bold text-indigo-400">{latencyMs} ms</span>
           </div>
-          <div className="px-2.5 py-1 rounded border border-gh-border bg-[#0d1117] text-gh-text flex items-center gap-1">
-            <Layers size={11} className="text-[#d2a8ff]" />
-            Size: <span className="font-bold text-[#d2a8ff]">{formatSize(sizeBytes)}</span>
+          <div className="px-2.5 py-1 rounded-md border border-gh-border bg-[#090b10] text-slate-300 flex items-center gap-1.5">
+            <Layers size={11} className="text-purple-400" />
+            Size: <span className="font-bold text-purple-400">{formatSize(sizeBytes)}</span>
           </div>
         </div>
       </div>
 
       {/* Response Pane Tabs */}
-      <div className="border-b border-gh-border bg-gh-panel px-4 flex gap-4 text-xs text-gh-mute font-mono select-none">
+      <div className="border-b border-gh-border bg-gh-panel px-4 flex gap-4 text-[11px] text-gh-mute font-sans select-none">
         
         {/* Visualizer Tab Button */}
         <button 
           id="res-tab-visualizer"
           onClick={() => setActiveTab("visualizer")}
-          className={`py-2 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
+          className={`py-2.5 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
             activeTab === "visualizer" ? "text-white font-semibold" : ""
           }`}
         >
-          <Eye size={12} className={activeTab === "visualizer" ? "text-[#7ee787]" : ""} />
+          <Eye size={12} className={activeTab === "visualizer" ? "text-emerald-400" : ""} />
           Visualizer (UI)
-          {activeTab === "visualizer" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#58a6ff]" />}
+          {activeTab === "visualizer" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-500" />}
         </button>
 
         {/* Raw JSON Tab Button */}
         <button 
           id="res-tab-json"
           onClick={() => setActiveTab("json")}
-          className={`py-2 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
+          className={`py-2.5 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
             activeTab === "json" ? "text-white font-semibold" : ""
           }`}
         >
-          <Code2 size={12} className={activeTab === "json" ? "text-[#58a6ff]" : ""} />
+          <Code2 size={12} className={activeTab === "json" ? "text-indigo-400" : ""} />
           {"{ } JSON"}
-          {activeTab === "json" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#58a6ff]" />}
+          {activeTab === "json" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-500" />}
         </button>
 
         {/* Documentation Tab Button */}
         <button 
           id="res-tab-docs"
           onClick={() => setActiveTab("docs")}
-          className={`py-2 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
+          className={`py-2.5 px-1 relative flex items-center gap-1.5 hover:text-white transition cursor-pointer ${
             activeTab === "docs" ? "text-white font-semibold" : ""
           }`}
         >
-          <BookOpen size={12} className={activeTab === "docs" ? "text-[#d29922]" : ""} />
+          <BookOpen size={12} className={activeTab === "docs" ? "text-amber-400" : ""} />
           API Docs
-          {activeTab === "docs" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#58a6ff]" />}
+          {activeTab === "docs" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-500" />}
         </button>
       </div>
 

@@ -29,6 +29,9 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   const [formError, setFormError] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
 
+  // Local state for image loading checks
+  const [imageError, setImageError] = useState(false);
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactForm.name || !contactForm.email || !contactForm.message) {
@@ -77,37 +80,34 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   // 1. Root Route Visualizer: Welcome Dashboard
   if (path === "/" || path === "") {
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
-        <div className="p-6 rounded-lg bg-gh-panel border border-gh-border shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5 text-gh-mute">
+      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text font-sans">
+        <div className="p-6 rounded-xl bg-gradient-to-br from-[#11141a] to-[#161a24] border border-gh-border shadow-md relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5 text-indigo-400">
             <Server size={180} />
           </div>
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#7ee787]/10 border border-[#7ee787]/20 text-[11px] font-mono font-medium text-[#7ee787] mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#7ee787] animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-400/5 border border-emerald-500/15 text-[10px] font-mono font-bold text-emerald-400 mb-4 tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               STATUS: API_OPERATIONAL_200
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white mb-2 font-mono">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3 font-sans">
               Sristi's RESTful API Service
             </h1>
-            <p className="text-gh-mute max-w-xl text-sm mb-4">
-              This service serves information about my skills, experience, and projects. You can query this service to by clicking on the API you want to hit from the left nav bar and it would automatically
-              get populated in the search bar on the top of this page. Just click "SEND" to execute the query!
-              Happy Querying!
-
+            <p className="text-slate-400 max-w-xl text-xs sm:text-sm leading-relaxed mb-5 font-sans">
+              Welcome to the interactive REST API Workspace. This playground exposes endpoints to query technical stack data, work experience history, and system highlights. Click on any route path in the left collections tree to draft query parameters and hit the SEND button to execute calls.
             </p>
             <div className="flex flex-wrap gap-3">
               <button
                 id="btn-vis-about"
                 onClick={() => onNavigate("/about")}
-                className="px-4 py-2 rounded bg-gh-green hover:bg-gh-green-hover text-white font-medium text-xs font-sans transition duration-200 cursor-pointer"
+                className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition duration-200 cursor-pointer shadow-md hover:shadow-[0_0_12px_rgba(99,102,241,0.25)]"
               >
-                GET /about me
+                GET /about
               </button>
               <button
                 id="btn-vis-projects"
                 onClick={() => onNavigate("/projects")}
-                className="px-4 py-2 rounded bg-[#21262d] hover:bg-[#30363d] border border-gh-border font-medium text-xs font-mono text-white transition duration-200 cursor-pointer"
+                className="px-4 py-2 rounded-md bg-[#161a22] hover:bg-[#202530] border border-gh-border font-semibold text-xs text-white transition duration-200 cursor-pointer"
               >
                 GET /projects
               </button>
@@ -117,30 +117,30 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
 
         {/* Quick System Diagnostics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
+          <div className="p-4 rounded-xl bg-[#11141a]/60 border border-gh-border/80 shadow-inner hover:border-indigo-500/35 transition-colors duration-200 group">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gh-mute uppercase font-mono font-semibold tracking-wider">Heap Memory</span>
-              <Cpu className="text-[#58a6ff]" size={16} />
+              <span className="text-[10px] text-gh-mute uppercase font-bold tracking-wider font-sans">Heap Memory</span>
+              <Cpu className="text-indigo-400 group-hover:text-indigo-350 transition-colors" size={15} />
             </div>
-            <div className="text-2xl font-bold font-mono text-white">42.8 MB</div>
+            <div className="text-2xl font-bold font-mono text-white">42.8 <span className="text-xs font-semibold text-gh-mute font-sans">MB</span></div>
             <div className="text-[10px] text-gh-mute font-mono mt-1">Slower allocations, GC run 3m ago</div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
+          <div className="p-4 rounded-xl bg-[#11141a]/60 border border-gh-border/80 shadow-inner hover:border-amber-500/35 transition-colors duration-200 group">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gh-mute uppercase font-mono font-semibold tracking-wider">Avg Latency</span>
-              <Clock className="text-[#d29922]" size={16} />
+              <span className="text-[10px] text-gh-mute uppercase font-bold tracking-wider font-sans">Avg Latency</span>
+              <Clock className="text-amber-400 group-hover:text-amber-350 transition-colors" size={15} />
             </div>
-            <div className="text-2xl font-bold font-mono text-white">14.2 ms</div>
-            <div className="text-[10px] text-gh-mute font-mono mt-1">p99 threshold at 32ms</div>
+            <div className="text-2xl font-bold font-mono text-white">14.2 <span className="text-xs font-semibold text-gh-mute font-sans">ms</span></div>
+            <div className="text-[10px] text-gh-mute font-mono mt-1">p99 latency threshold at 32ms</div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
+          <div className="p-4 rounded-xl bg-[#11141a]/60 border border-gh-border/80 shadow-inner hover:border-emerald-500/35 transition-colors duration-200 group">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gh-mute uppercase font-mono font-semibold tracking-wider">Gateway Nodes</span>
-              <Network className="text-[#7ee787]" size={16} />
+              <span className="text-[10px] text-gh-mute uppercase font-bold tracking-wider font-sans">Gateway Nodes</span>
+              <Network className="text-emerald-400 group-hover:text-emerald-350 transition-colors" size={15} />
             </div>
-            <div className="text-2xl font-bold font-mono text-white">4 / 4 Active</div>
+            <div className="text-2xl font-bold font-mono text-white">4 / 4 <span className="text-xs font-semibold text-emerald-400 font-sans">Active</span></div>
             <div className="text-[10px] text-gh-mute font-mono mt-1">Health checked 10s ago via Consul</div>
           </div>
         </div>
@@ -153,58 +153,71 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
     const info = data as AboutInfo;
     const base = import.meta.env.BASE_URL;
     const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
-    const rawAvatar = info.avatarUrl || "/sristi.svg";
+    const rawAvatar = info.avatarUrl || "/Sristi-profile.png";
     const avatarPath = rawAvatar.startsWith('/') ? `${cleanBase}${rawAvatar}` : `${cleanBase}/${rawAvatar}`;
 
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
-        <div className="flex flex-col md:flex-row gap-6 p-6 rounded-lg bg-gh-panel border border-gh-border">
+      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text font-sans">
+        <div className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
           <div className="flex-shrink-0 flex flex-col items-center">
-            {/* Hardcoded Avatar with relative path */}
-            <div className="relative group overflow-hidden rounded-xl border-2 border-gh-blue/60 shadow-lg">
-              <img 
-                src={avatarPath} 
-                alt={info.name} 
-                className="w-36 h-48 sm:w-40 sm:h-52 object-cover object-top"
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = `${cleanBase}/sristi.svg`;
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
-              <span className="absolute bottom-2 left-2 right-2 text-center text-[10px] font-mono text-white font-bold bg-black/70 backdrop-blur px-2 py-0.5 rounded border border-white/10">
+            {/* Avatar Container */}
+            <div className="relative group overflow-hidden rounded-xl border border-indigo-500/20 shadow-md w-36 h-48 sm:w-40 sm:h-52 bg-[#090b10] flex items-center justify-center">
+              {!imageError ? (
+                <img 
+                  src={avatarPath} 
+                  alt={info.name} 
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                  referrerPolicy="no-referrer"
+                  onError={() => {
+                    setImageError(true);
+                  }}
+                />
+              ) : (
+                /* Elegant Professional Silhouette Vector Fallback */
+                <svg className="w-16 h-16 text-indigo-400/40" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12c0 2.822 1.2 5.362 3.097 7.12a.75.75 0 01.072-1.045c.983-.872 2.458-1.575 4.331-1.575h4.5c1.873 0 3.348.703 4.331 1.575a.75.75 0 01.072 1.045zM15 9.75a3 3 0 11-6 0 3 3 0 016 0z" clipRule="evenodd" />
+                </svg>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+              <span className="absolute bottom-2 left-2 right-2 text-center text-[10px] font-mono text-white/90 font-bold bg-[#090b10]/80 backdrop-blur-sm px-2 py-0.5 rounded border border-white/5 pointer-events-none">
                 Sristi Sharma
               </span>
             </div>
 
-            <div className="flex flex-col items-center gap-2 mt-3">
-              <span className="px-2.5 py-1 rounded bg-gh-active-bg border border-gh-blue/30 text-[#58a6ff] font-mono text-[10px] uppercase tracking-wider font-bold">
+            <div className="flex flex-col items-center gap-2 mt-3.5">
+              <span className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-mono text-[10px] uppercase tracking-wider font-semibold">
                 Experience: {info.experienceYears} Years
               </span>
             </div>
           </div>
 
-          <div className="space-y-3 flex-grow">
+          <div className="space-y-4 flex-grow">
             <div>
-              <h2 className="text-2xl font-bold text-white font-mono">{info.name}</h2>
-              <p className="text-[#7ee787] font-mono text-xs font-bold mt-0.5">{info.title}</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{info.name}</h2>
+              <p className="text-emerald-400 font-mono text-xs font-semibold mt-1">{info.title}</p>
             </div>
-            <p className="text-gh-text text-sm leading-relaxed">{info.bio}</p>
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">{info.bio}</p>
             
-            <div className="pt-3 border-t border-gh-border grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-gh-mute">
-              <div>📍 Location: <span className="text-gh-text font-semibold">{info.location}</span></div>
-              <div>🛠️ Philosophy: <span className="text-gh-text">{info.philosophy}</span></div>
+            <div className="pt-4 border-t border-gh-border/50 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-xs text-slate-400">
+              <div className="flex items-center gap-2">
+                <MapPin size={14} className="text-indigo-400 flex-shrink-0" />
+                <span>Location: <span className="text-white font-medium">{info.location}</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Cpu size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
+                <span>Philosophy: <span className="text-white font-medium">{info.philosophy}</span></span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Interests & Topics of Domain */}
-        <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-          <h3 className="text-xs uppercase font-mono tracking-wider text-[#58a6ff] font-black mb-3">Core Technical Obsessions</h3>
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+          <h3 className="text-[10px] uppercase font-mono tracking-wider font-bold text-indigo-400 mb-3.5">Core Technical Obsessions</h3>
           <div className="flex flex-wrap gap-2">
             {info.interests && info.interests.map((interest, i) => (
-              <span key={i} className="px-3 py-1.5 rounded bg-[#21262d] border border-gh-border text-gh-text font-mono text-xs hover:border-gh-blue transition duration-150">
-                ⚡ {interest}
+              <span key={i} className="px-3 py-1.5 rounded-lg bg-[#090b10] border border-gh-border text-slate-300 font-sans text-xs hover:border-indigo-500/40 hover:bg-indigo-500/5 hover:text-white transition duration-200">
+                {interest}
               </span>
             ))}
           </div>
@@ -221,111 +234,122 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
     const education: EducationItem = data?.education || developerEducation;
 
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
+      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text font-sans">
         {/* Header Stats / Overview */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-lg bg-gh-panel border border-gh-border">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded bg-[#d29922]/15 text-[#d29922] border border-[#d29922]/30">
-              <Briefcase size={20} />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4.5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border">
+          <div className="flex items-start sm:items-center gap-3">
+            <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <Briefcase size={18} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white font-mono">Work Experience & Impact</h2>
-              <p className="text-xs text-gh-mute font-mono">4 Years SDE | Large-Scale Distributed Systems, LLM Orchestration & Backend Infrastructure</p>
+              <h2 className="text-base font-bold text-white">Work Experience & Impact</h2>
+              <p className="text-xs text-slate-400 font-sans mt-0.5">Large-Scale Distributed Systems, LLM Orchestration & Backend Infrastructure</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="px-2.5 py-1 rounded bg-[#0d1117] border border-gh-border text-[#7ee787]">
+          <div className="flex items-center gap-2 font-mono text-[10px] self-start sm:self-auto">
+            <span className="px-2.5 py-1 rounded-full bg-emerald-400/5 border border-emerald-500/15 text-emerald-400 font-bold">
               {experiences.length} Career Roles
             </span>
-            <span className="px-2.5 py-1 rounded bg-[#0d1117] border border-gh-border text-[#58a6ff]">
+            <span className="px-2.5 py-1 rounded-full bg-indigo-500/5 border border-indigo-500/15 text-indigo-400 font-bold">
               Bengaluru, India
             </span>
           </div>
         </div>
 
-        {/* Experience Timeline */}
-        <div className="space-y-5">
+        {/* Vertical Timeline Stepper */}
+        <div className="relative pl-5 sm:pl-7 border-l border-gh-border/60 ml-4 space-y-8 py-2">
           {experiences.map((exp, i) => (
-            <div key={exp.id || i} className="p-5 rounded-lg bg-gh-panel border border-gh-border hover:border-[#58a6ff]/40 transition duration-200">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gh-border">
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-base font-bold text-white font-mono">{exp.role}</h3>
-                    <span className="text-xs font-mono font-bold text-[#58a6ff]">@ {exp.company}</span>
-                    {exp.isCurrent && (
-                      <span className="px-2 py-0.5 rounded bg-[#7ee787]/15 border border-[#7ee787]/30 text-[#7ee787] text-[10px] font-mono font-bold">
-                        CURRENT ROLE
+            <div key={exp.id || i} className="relative group">
+              {/* Stepper Dot */}
+              <div className="absolute -left-[29px] sm:-left-[33px] top-2.5 w-3.5 h-3.5 rounded-full bg-[#090b10] border-2 border-indigo-500 flex items-center justify-center z-10 shadow-[0_0_8px_rgba(99,102,241,0.3)]">
+                <div className="w-1 h-1 rounded-full bg-indigo-400" />
+              </div>
+
+              {/* Card Container */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border hover:border-indigo-500/25 transition duration-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gh-border/50">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-sm sm:text-base font-bold text-white">{exp.role}</h3>
+                      <span className="text-xs font-semibold text-indigo-400">@ {exp.company}</span>
+                      {exp.isCurrent && (
+                        <span className="px-2 py-0.5 rounded bg-emerald-400/5 border border-emerald-500/15 text-emerald-400 text-[9px] font-mono font-bold tracking-wider">
+                          CURRENT
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-gh-mute mt-1.5">
+                      <span className="flex items-center gap-1.5"><MapPin size={11} className="text-indigo-400" /> {exp.location}</span>
+                      <span className="flex items-center gap-1.5"><Calendar size={11} className="text-indigo-400" /> {exp.period}</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    id={`btn-exp-${exp.id}`}
+                    onClick={() => onNavigate(`/experience/${exp.id}`)}
+                    className="px-2.5 py-1.5 rounded-md bg-white/[0.03] hover:bg-white/[0.06] border border-gh-border text-white text-[10px] font-mono transition duration-200 flex items-center gap-1 self-start sm:self-auto cursor-pointer hover:border-indigo-500/30"
+                  >
+                    GET /experience/{exp.id} <ChevronRight size={11} />
+                  </button>
+                </div>
+
+                {/* Impact Metrics Pills */}
+                {exp.metrics && exp.metrics.length > 0 && (
+                  <div className="flex flex-wrap gap-2 my-3.5">
+                    {exp.metrics.map((metric, mIdx) => (
+                      <span key={mIdx} className="px-2 py-1 rounded-md bg-indigo-500/5 border border-indigo-500/15 text-indigo-400 text-[10.5px] font-mono flex items-center gap-1">
+                        <TrendingUp size={11} className="text-emerald-400" /> {metric}
                       </span>
-                    )}
+                    ))}
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gh-mute font-mono mt-1">
-                    <span className="flex items-center gap-1"><MapPin size={12} /> {exp.location}</span>
-                    <span className="flex items-center gap-1"><Calendar size={12} /> {exp.period}</span>
+                )}
+
+                {/* Highlights Bullet List */}
+                <div className="mt-3.5 space-y-2">
+                  <h4 className="text-[9.5px] font-mono uppercase tracking-wider font-bold text-gh-mute">Key Contributions & Engineering Accomplishments</h4>
+                  <ul className="space-y-2 text-xs sm:text-[13px] text-slate-300 leading-relaxed font-sans">
+                    {exp.highlights && exp.highlights.map((item, hIdx) => (
+                      <li key={hIdx} className="flex gap-2.5 items-start">
+                        <CheckCircle2 size={13} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Tech Stack Pills */}
+                {exp.technologies && exp.technologies.length > 0 && (
+                  <div className="mt-4 pt-3.5 border-t border-gh-border/50 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[9px] font-mono text-gh-mute uppercase font-bold mr-1">Stack:</span>
+                    {exp.technologies.map((tech, tIdx) => (
+                      <span key={tIdx} className="px-2 py-0.5 rounded bg-[#090b10] border border-gh-border text-slate-400 font-mono text-[10px]">
+                        {tech}
+                      </span>
+                    ))}
                   </div>
-                </div>
-
-                <button 
-                  id={`btn-exp-${exp.id}`}
-                  onClick={() => onNavigate(`/experience/${exp.id}`)}
-                  className="px-3 py-1.5 rounded bg-[#21262d] hover:bg-[#30363d] border border-gh-border text-white text-xs font-mono transition duration-200 flex items-center gap-1 self-start sm:self-auto cursor-pointer"
-                >
-                  GET /experience/{exp.id} <ChevronRight size={12} />
-                </button>
+                )}
               </div>
-
-              {/* Impact Metrics Pills */}
-              {exp.metrics && exp.metrics.length > 0 && (
-                <div className="flex flex-wrap gap-2 my-3">
-                  {exp.metrics.map((metric, mIdx) => (
-                    <span key={mIdx} className="px-2.5 py-1 rounded bg-[#0d1117] border border-gh-blue/30 text-[#58a6ff] text-[11px] font-mono flex items-center gap-1">
-                      <TrendingUp size={11} className="text-[#7ee787]" /> {metric}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Highlights Bullet List */}
-              <div className="mt-3 space-y-2">
-                <h4 className="text-[11px] font-mono uppercase tracking-wider font-bold text-gh-mute">Key Contributions & Engineering Accomplishments:</h4>
-                <ul className="space-y-2 text-xs text-gh-text leading-relaxed">
-                  {exp.highlights && exp.highlights.map((item, hIdx) => (
-                    <li key={hIdx} className="flex gap-2.5 items-start">
-                      <CheckCircle2 size={13} className="text-[#7ee787] mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Tech Stack Pills */}
-              {exp.technologies && exp.technologies.length > 0 && (
-                <div className="mt-4 pt-3 border-t border-gh-border/60 flex flex-wrap items-center gap-1.5">
-                  <span className="text-[10px] font-mono text-gh-mute uppercase font-bold mr-1">Stack:</span>
-                  {exp.technologies.map((tech, tIdx) => (
-                    <span key={tIdx} className="px-2 py-0.5 rounded bg-[#21262d] border border-gh-border text-gh-mute font-mono text-[10px]">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
         </div>
 
         {/* Education Section */}
         {education && (
-          <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-            <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-[#d2a8ff] mb-3 flex items-center gap-2">
-              <GraduationCap size={16} /> Education
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+            <h3 className="text-[10px] uppercase font-mono tracking-wider font-bold text-purple-400 mb-3.5 flex items-center gap-2">
+              <GraduationCap size={15} /> Education
             </h3>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 rounded bg-[#0d1117] border border-gh-border">
-              <div>
-                <h4 className="text-sm font-bold text-white font-mono">{education.institution}</h4>
-                <p className="text-xs text-[#7ee787] font-mono mt-0.5">{education.degree}</p>
-                <p className="text-xs text-gh-mute font-mono mt-1">📍 {education.location} • {education.graduationDate}</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner">
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold text-white">{education.institution}</h4>
+                <p className="text-xs text-indigo-400 font-semibold">{education.degree}</p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 pt-0.5 font-sans">
+                  <span className="flex items-center gap-1"><MapPin size={11} /> {education.location}</span>
+                  <span>• {education.graduationDate}</span>
+                </div>
               </div>
-              <div className="px-3 py-1.5 rounded bg-gh-active-bg border border-gh-blue/30 text-[#58a6ff] text-xs font-mono font-bold self-start sm:self-auto">
-                CGPA: {education.cgpa}
+              <div className="px-3.5 py-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono font-bold self-start sm:self-auto shadow-sm">
+                CGPA: <span className="text-white font-black">{education.cgpa}</span>
               </div>
             </div>
           </div>
@@ -339,37 +363,37 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
     const exp = data as ExperienceItem;
     if (!exp || !exp.company) {
       return (
-        <div className="p-6 text-center text-gh-mute font-mono">
+        <div className="p-6 text-center text-gh-mute font-mono text-xs leading-relaxed">
           Experience record unavailable. Query a valid endpoint (e.g. /experience/amazon-alexa, /experience/amazon-music).
         </div>
       );
     }
 
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
-        <div className="p-6 rounded-lg bg-gh-panel border border-gh-border space-y-4">
-          <div className="flex flex-wrap justify-between items-start gap-3 border-b border-gh-border pb-4">
+      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text font-sans">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border space-y-5">
+          <div className="flex flex-wrap justify-between items-start gap-4 border-b border-gh-border/50 pb-4">
             <div>
-              <span className="text-[10px] font-mono text-gh-mute uppercase tracking-widest bg-[#0d1117] border border-gh-border px-2 py-0.5 rounded">
+              <span className="text-[9px] font-mono text-gh-mute uppercase tracking-widest bg-[#090b10] border border-gh-border px-2.5 py-0.5 rounded-full">
                 Endpoint /experience/{exp.id}
               </span>
-              <h2 className="text-2xl font-bold text-white font-mono mt-1.5">{exp.role}</h2>
-              <p className="text-base font-bold text-[#58a6ff] font-mono">@ {exp.company}</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mt-2">{exp.role}</h2>
+              <p className="text-sm sm:text-base font-semibold text-indigo-400 mt-0.5">@ {exp.company}</p>
             </div>
-            <div className="text-right font-mono text-xs text-gh-mute space-y-1">
-              <div>📍 {exp.location}</div>
-              <div className="text-[#7ee787] font-bold">📅 {exp.period}</div>
+            <div className="font-sans text-xs text-slate-450 space-y-1 sm:text-right">
+              <div className="flex items-center sm:justify-end gap-1.5"><MapPin size={12} className="text-indigo-400" /> {exp.location}</div>
+              <div className="flex items-center sm:justify-end gap-1.5 font-semibold text-emerald-400"><Calendar size={12} /> {exp.period}</div>
             </div>
           </div>
 
           {/* Key Metrics grid */}
           {exp.metrics && exp.metrics.length > 0 && (
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider font-bold text-[#7ee787] mb-2.5">Key Performance Metrics & Impact</h4>
+            <div className="space-y-2">
+              <h4 className="text-[10px] uppercase font-mono tracking-wider font-bold text-emerald-400">Key Performance Metrics & Impact</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {exp.metrics.map((m, idx) => (
-                  <div key={idx} className="p-3 rounded bg-[#0d1117] border border-gh-border flex items-center gap-2 text-xs font-mono text-white">
-                    <Sparkles size={14} className="text-[#d29922] flex-shrink-0" />
+                  <div key={idx} className="p-3 rounded-lg bg-[#090b10]/60 border border-gh-border/80 flex items-center gap-2 text-xs font-mono text-white shadow-inner">
+                    <Sparkles size={13} className="text-indigo-400 flex-shrink-0" />
                     <span>{m}</span>
                   </div>
                 ))}
@@ -378,12 +402,12 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
           )}
 
           {/* Detailed Contributions */}
-          <div>
-            <h4 className="text-xs uppercase font-mono tracking-wider font-bold text-[#58a6ff] mb-2.5">Architectural Details & Project Contributions</h4>
-            <div className="space-y-2.5 p-4 rounded bg-[#0d1117] border border-gh-border">
+          <div className="space-y-2">
+            <h4 className="text-[10px] uppercase font-mono tracking-wider font-bold text-indigo-400">Architectural Details & Project Contributions</h4>
+            <div className="space-y-3 p-4 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner leading-relaxed">
               {exp.highlights && exp.highlights.map((h, idx) => (
-                <div key={idx} className="flex items-start gap-2 text-xs leading-relaxed text-gh-text">
-                  <span className="font-mono text-[#7ee787] font-bold">[{idx + 1}]</span>
+                <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-300">
+                  <span className="font-mono text-emerald-400 font-bold flex-shrink-0">[{idx + 1}]</span>
                   <span>{h}</span>
                 </div>
               ))}
@@ -392,11 +416,11 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
 
           {/* Stack */}
           {exp.technologies && (
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider font-bold text-gh-mute mb-2">Technologies Used</h4>
+            <div className="space-y-2">
+              <h4 className="text-[10px] uppercase font-mono tracking-wider font-bold text-gh-mute">Technologies Used</h4>
               <div className="flex flex-wrap gap-1.5">
                 {exp.technologies.map((tech, idx) => (
-                  <span key={idx} className="px-2.5 py-1 rounded bg-[#21262d] border border-gh-border text-xs font-mono text-gh-text">
+                  <span key={idx} className="px-2.5 py-1 rounded bg-[#090b10] border border-gh-border text-xs font-mono text-slate-300">
                     {tech}
                   </span>
                 ))}
@@ -412,14 +436,14 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   if (path === "/skills") {
     const group = data as SkillGroup;
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn">
+      <div className="space-y-6 pt-1 font-sans">
         {/* Core Languages and Frameworks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-[#7ee787] font-bold mb-4 flex items-center gap-1.5">
-              <Code2 size={14} /> Languages
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border">
+            <h3 className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
+              <Code2 size={13} /> Languages
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {group.languages && group.languages.map((item, i) => {
                 const widthMap: Record<string, string> = {
                   "Expert": "w-[95%]",
@@ -428,19 +452,19 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                   "Learning": "w-[30%]"
                 };
                 const colorMap: Record<string, string> = {
-                  "Expert": "bg-[#7ee787]",
-                  "Advanced": "bg-[#58a6ff]",
-                  "Intermediate": "bg-[#d29922]",
-                  "Learning": "bg-[#8b949e]"
+                  "Expert": "bg-gradient-to-r from-emerald-500 to-teal-400",
+                  "Advanced": "bg-gradient-to-r from-indigo-500 to-indigo-400",
+                  "Intermediate": "bg-gradient-to-r from-amber-500 to-orange-400",
+                  "Learning": "bg-[#64748b]"
                 };
                 return (
-                  <div key={i} className="space-y-1">
+                  <div key={i} className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs font-mono">
-                      <span className="text-gh-text font-semibold">{item.name} {item.version && `(${item.version})`}</span>
-                      <span className="text-gh-mute text-[10px]">{item.proficiency}</span>
+                      <span className="text-white font-medium">{item.name} {item.version && `(${item.version})`}</span>
+                      <span className="text-gh-mute text-[10px] font-sans">{item.proficiency}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden">
-                      <div className={`h-full ${widthMap[item.proficiency] || "w-[50%]"} ${colorMap[item.proficiency] || "bg-[#7ee787]"}`} />
+                    <div className="h-1.5 w-full bg-[#090b10] rounded-full overflow-hidden shadow-inner">
+                      <div className={`h-full rounded-full ${widthMap[item.proficiency] || "w-[50%]"} ${colorMap[item.proficiency] || "bg-emerald-400"}`} />
                     </div>
                   </div>
                 );
@@ -448,11 +472,11 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
             </div>
           </div>
 
-          <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-[#d2a8ff] font-bold mb-4 flex items-center gap-1.5">
-              <Layers size={14} className="text-[#d2a8ff]" /> Frameworks & Interfaces
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border">
+            <h3 className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold mb-4 flex items-center gap-1.5">
+              <Layers size={13} className="text-purple-400" /> Frameworks & Interfaces
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {group.frameworks && group.frameworks.map((item, i) => {
                 const widthMap: Record<string, string> = {
                   "Expert": "w-[95%]",
@@ -461,13 +485,13 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                   "Learning": "w-[30%]"
                 };
                 return (
-                  <div key={i} className="space-y-1">
+                  <div key={i} className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs font-mono">
-                      <span className="text-gh-text font-semibold">{item.name}</span>
-                      <span className="text-gh-mute text-[10px]">{item.proficiency}</span>
+                      <span className="text-white font-medium">{item.name}</span>
+                      <span className="text-gh-mute text-[10px] font-sans">{item.proficiency}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden">
-                      <div className={`h-full ${widthMap[item.proficiency] || "w-[50%]"} bg-[#d2a8ff]`} />
+                    <div className="h-1.5 w-full bg-[#090b10] rounded-full overflow-hidden shadow-inner">
+                      <div className={`h-full rounded-full ${widthMap[item.proficiency] || "w-[50%]"} bg-gradient-to-r from-purple-500 to-indigo-400`} />
                     </div>
                   </div>
                 );
@@ -478,39 +502,39 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
 
         {/* Database & Infrastructure Chips */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
-            <h4 className="text-[11px] uppercase font-mono tracking-wider text-[#58a6ff] font-bold mb-2.5 flex items-center gap-1">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+            <h4 className="text-[10px] uppercase font-mono tracking-wider text-sky-400 font-bold mb-3 flex items-center gap-1.5">
               <Database size={12} /> Storage Engines
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {group.databases && group.databases.map((db, i) => (
-                <span key={i} className="px-2 py-1 rounded bg-[#0d1117] border border-gh-border text-[10px] font-mono text-gh-text">
+                <span key={i} className="px-2.5 py-1.5 rounded-lg bg-[#090b10] border border-gh-border text-[10px] font-mono text-slate-350 hover:border-sky-500/30 hover:text-white transition duration-150">
                   {db}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
-            <h4 className="text-[11px] uppercase font-mono tracking-wider text-[#f78166] font-bold mb-2.5 flex items-center gap-1">
-              <Network size={12} /> Cloud & Orchestrations
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+            <h4 className="text-[10px] uppercase font-mono tracking-wider text-rose-400 font-bold mb-3 flex items-center gap-1.5">
+              <Network size={12} /> Cloud & Infrastructure
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {group.cloud_platforms && group.cloud_platforms.map((platform, i) => (
-                <span key={i} className="px-2 py-1 rounded bg-[#0d1117] border border-gh-border text-[10px] font-mono text-gh-text">
+                <span key={i} className="px-2.5 py-1.5 rounded-lg bg-[#090b10] border border-gh-border text-[10px] font-mono text-slate-350 hover:border-rose-500/30 hover:text-white transition duration-150">
                   {platform}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border">
-            <h4 className="text-[11px] uppercase font-mono tracking-wider text-gh-mute font-bold mb-2.5 flex items-center gap-1">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+            <h4 className="text-[10px] uppercase font-mono tracking-wider text-gh-mute font-bold mb-3 flex items-center gap-1.5">
               <Terminal size={12} /> Systems & Pipelines
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {group.tools && group.tools.map((tool, i) => (
-                <span key={i} className="px-2 py-1 rounded bg-[#0d1117] border border-gh-border text-[10px] font-mono text-gh-text">
+                <span key={i} className="px-2.5 py-1.5 rounded-lg bg-[#090b10] border border-gh-border text-[10px] font-mono text-slate-350 hover:border-indigo-500/30 hover:text-white transition duration-150">
                   {tool}
                 </span>
               ))}
@@ -519,43 +543,41 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
         </div>
       </div>
     );
-  }
-
-  // 4. Projects Route Visualizer (Directory of list of projects)
+  }  // 4. Projects Route Visualizer (Directory of list of projects)
   if (path === "/projects") {
     const projects: ProjectItem[] = Array.isArray(data) 
       ? data 
       : (data?.projects_dataset || data?.projects || []);
     return (
-      <div className="space-y-4 pt-1 animate-fadeIn">
+      <div className="space-y-4 pt-1 font-sans">
         <div className="flex justify-between items-center px-1">
-          <span className="text-xs font-mono text-gh-mute">Total Systems Deployed: {projects.length}</span>
-          <span className="text-[10px] font-mono text-[#7ee787]">Namespace: Production</span>
+          <span className="text-[10px] font-mono text-gh-mute uppercase font-bold tracking-wider">Total Systems Deployed: {projects.length}</span>
+          <span className="text-[9.5px] font-mono text-emerald-400 bg-emerald-400/5 border border-emerald-500/15 px-2.5 py-0.5 rounded-full font-bold tracking-wider">Namespace: Production</span>
         </div>
 
         <div className="space-y-4">
           {projects.map((proj, i) => (
-            <div key={i} className="p-5 rounded-lg bg-gh-panel border border-gh-border hover:border-[#58a6ff]/40 transition duration-200 flex flex-col md:flex-row justify-between items-start gap-4">
-              <div className="space-y-2 flex-grow">
+            <div key={i} className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border hover:border-indigo-500/25 transition duration-250 flex flex-col md:flex-row justify-between items-start gap-4 hover:-translate-y-[1px] hover:shadow-[0_4px_20px_rgba(99,102,241,0.03)]">
+              <div className="space-y-2.5 flex-grow">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-lg font-bold text-white font-mono">{proj.name}</h3>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider ${
+                  <h3 className="text-base sm:text-lg font-bold text-white">{proj.name}</h3>
+                  <span className={`px-2 py-0.5 rounded-md text-[9.5px] font-mono font-bold uppercase tracking-wider border ${
                     proj.status === "completed" 
-                      ? "bg-[#7ee787]/15 border border-[#7ee787]/30 text-[#7ee787]" 
-                      : "bg-[#d29922]/15 border border-[#d29922]/30 text-[#d29922]"
+                      ? "bg-emerald-400/5 border-emerald-500/15 text-emerald-400" 
+                      : "bg-amber-400/5 border-amber-500/15 text-amber-400"
                   }`}>
                     {proj.status}
                   </span>
                   {proj.metric && (
-                    <span className="px-2 py-0.5 rounded bg-gh-active-bg border border-gh-blue/30 text-[#58a6ff] font-mono text-[10px]">
+                    <span className="px-2 py-0.5 rounded-md bg-indigo-500/5 border border-indigo-500/15 text-indigo-400 font-mono text-[9.5px] font-semibold">
                       {proj.metric}
                     </span>
                   )}
                 </div>
-                <p className="text-gh-text text-sm">{proj.description}</p>
-                <div className="flex flex-wrap gap-1.5 pt-1">
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">{proj.description}</p>
+                <div className="flex flex-wrap gap-1.5 pt-1.5">
                   {proj.technologies_used && proj.technologies_used.map((tech, j) => (
-                    <span key={j} className="px-2 py-0.5 rounded bg-[#21262d] border border-gh-border text-gh-mute text-[10px] font-mono">
+                    <span key={j} className="px-2 py-0.5 rounded bg-[#090b10] border border-gh-border text-slate-400 text-[10px] font-mono">
                       {tech}
                     </span>
                   ))}
@@ -565,9 +587,9 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                 <button 
                   id={`btn-proj-${proj.id}`}
                   onClick={() => onNavigate(`/projects/${proj.id}`)}
-                  className="w-full md:w-auto px-3.5 py-2 rounded bg-[#21262d] hover:bg-[#30363d] border border-gh-border text-white font-mono text-xs transition duration-200 flex items-center justify-center gap-1 cursor-pointer"
+                  className="w-full md:w-auto px-4 py-2 rounded-md bg-white/[0.03] hover:bg-white/[0.06] border border-gh-border text-white font-sans font-semibold text-xs transition duration-200 flex items-center justify-center gap-1 cursor-pointer hover:border-indigo-500/30"
                 >
-                  Inspect API Endpoint <ExternalLink size={12} />
+                  Inspect API Endpoint <ExternalLink size={11} />
                 </button>
               </div>
             </div>
@@ -582,38 +604,40 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
     const proj = data as ProjectItem;
     if (!proj || !proj.name) {
       return (
-        <div className="p-6 text-center text-gh-mute font-mono">
+        <div className="p-6 text-center text-gh-mute font-mono text-xs">
           Project records unavailable. Query correct project endpoint (e.g. /projects/youtube-comment-manager-mcp).
         </div>
       );
     }
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
-        <div className="p-6 rounded-lg bg-gh-panel border border-gh-border">
-          <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
+      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text font-sans">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border space-y-4">
+          <div className="flex flex-wrap justify-between items-center gap-3 border-b border-gh-border/50 pb-4">
             <div>
-              <span className="text-[10px] font-mono text-gh-mute uppercase tracking-widest bg-[#0d1117] border border-gh-border px-2 py-0.5 rounded">Endpoint /projects/{proj.id}</span>
-              <h2 className="text-2xl font-bold text-white font-mono mt-1">{proj.name}</h2>
+              <span className="text-[9px] font-mono text-gh-mute uppercase tracking-widest bg-[#090b10] border border-gh-border px-2.5 py-0.5 rounded-full">
+                Endpoint /projects/{proj.id}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mt-2">{proj.name}</h2>
             </div>
-            <span className="px-2.5 py-1 rounded bg-gh-active-bg border border-gh-blue/30 text-[#58a6ff] font-mono text-xs capitalize">
+            <span className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-mono text-[10px] uppercase font-bold tracking-wider">
               Role: {proj.your_role}
             </span>
           </div>
 
-          <p className="text-sm text-gh-text leading-relaxed mb-4">{proj.overview}</p>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{proj.overview}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider font-bold text-[#7ee787] mb-2">System Architecture Notes</h4>
-              <p className="text-xs text-gh-mute font-mono bg-[#0d1117] p-3 rounded border border-gh-border">
+            <div className="space-y-2">
+              <h4 className="text-[10px] uppercase font-mono tracking-wider font-bold text-emerald-400">System Architecture Notes</h4>
+              <p className="text-xs text-slate-300 font-mono bg-[#090b10]/60 p-3 rounded-xl border border-gh-border shadow-inner leading-relaxed">
                 {proj.architecture_notes}
               </p>
             </div>
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider font-bold text-[#58a6ff] mb-2">Technologies Deployed</h4>
-              <div className="flex flex-wrap gap-1.5 p-3 rounded bg-[#0d1117] border border-gh-border">
+            <div className="space-y-2">
+              <h4 className="text-[10px] uppercase font-mono tracking-wider font-bold text-indigo-400">Technologies Deployed</h4>
+              <div className="flex flex-wrap gap-1.5 p-3 rounded-xl bg-[#090b10]/60 border border-gh-border shadow-inner">
                 {proj.technologies_used && proj.technologies_used.map((tech, i) => (
-                  <span key={i} className="px-2 py-1 rounded bg-[#21262d] border border-gh-border text-gh-text text-xs font-mono">
+                  <span key={i} className="px-2.5 py-1.5 rounded-lg bg-[#11141a] border border-gh-border text-slate-300 text-xs font-mono">
                     {tech}
                   </span>
                 ))}
@@ -624,24 +648,24 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
 
         {/* Features & Key Challenges */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-            <h3 className="text-xs uppercase font-mono tracking-wider text-gh-mute font-black mb-3">Key Solutions & Implementations</h3>
-            <ul className="space-y-2.5 text-xs text-gh-text">
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border">
+            <h3 className="text-[10px] uppercase font-mono tracking-wider text-emerald-400 font-bold mb-3.5">Key Solutions & Implementations</h3>
+            <ul className="space-y-3 text-xs text-slate-300 leading-relaxed">
               {proj.key_features && proj.key_features.map((feat, i) => (
-                <li key={i} className="flex gap-2 items-start font-sans">
-                  <CheckCircle2 size={14} className="text-[#7ee787] mt-0.5 flex-shrink-0" />
+                <li key={i} className="flex gap-2 items-start">
+                  <CheckCircle2 size={13} className="text-emerald-400 mt-0.5 flex-shrink-0" />
                   <span>{feat}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-            <h3 className="text-xs uppercase font-mono tracking-wider text-gh-mute font-black mb-3">Post-Mortem Challenge Solved</h3>
-            <ul className="space-y-2.5 text-xs text-gh-text">
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border">
+            <h3 className="text-[10px] uppercase font-mono tracking-wider text-amber-400 font-bold mb-3.5">Post-Mortem Challenge Solved</h3>
+            <ul className="space-y-3 text-xs text-slate-300 leading-relaxed">
               {proj.challenges_solved && proj.challenges_solved.map((chal, i) => (
-                <li key={i} className="flex gap-2 items-start font-sans">
-                  <span className="font-mono text-[#58a6ff] text-xs mt-0.5 flex-shrink-0 font-bold">[{i+1}]</span>
+                <li key={i} className="flex gap-2 items-start">
+                  <span className="font-mono text-indigo-400 text-xs mt-0.5 flex-shrink-0 font-bold">[{i+1}]</span>
                   <span>{chal}</span>
                 </li>
               ))}
@@ -650,14 +674,14 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
         </div>
 
         {/* Repo Actions */}
-        <div className="flex flex-wrap gap-3 pt-2">
+        <div className="flex flex-wrap gap-3 pt-1">
           <a 
             href={proj.github_repo} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded bg-[#21262d] hover:bg-[#30363d] text-white font-mono text-xs border border-gh-border transition duration-200 flex items-center gap-1.5"
+            className="px-4 py-2 rounded-md bg-white/[0.03] hover:bg-white/[0.06] text-white font-mono text-xs border border-gh-border transition duration-200 flex items-center gap-1.5 hover:border-indigo-500/35 cursor-pointer font-sans font-semibold"
           >
-            <Github size={13} /> View Codebase
+            <Github size={13} className="text-indigo-400" /> View Codebase
           </a>
         </div>
       </div>
@@ -670,42 +694,42 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
       ? (data as ContactDetails)
       : developerContact;
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn">
+      <div className="space-y-6 pt-1 font-sans">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Email Card */}
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border hover:border-[#7ee787]/40 transition duration-200 flex items-center gap-3.5">
-            <div className="p-2.5 rounded bg-[#7ee787]/10 text-[#7ee787]">
-              <Mail size={18} />
+          <div className="p-4.5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border hover:border-emerald-500/25 transition duration-200 flex items-center gap-3.5 shadow-sm">
+            <div className="p-2.5 rounded-lg bg-emerald-450/5 text-emerald-450 border border-emerald-500/15">
+              <Mail size={16} />
             </div>
             <div>
-              <span className="text-[10px] font-mono text-gh-mute uppercase">Interactive Mailbox</span>
-              <a href={`mailto:${details.email}`} className="block text-xs font-mono text-gh-text hover:text-[#7ee787] transition mt-0.5">
+              <span className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">Interactive Mailbox</span>
+              <a href={`mailto:${details.email}`} className="block text-xs font-mono text-white hover:text-emerald-450 transition mt-0.5 font-semibold">
                 {details.email}
               </a>
             </div>
           </div>
 
           {/* GitHub Card */}
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border hover:border-[#d2a8ff]/40 transition duration-200 flex items-center gap-3.5">
-            <div className="p-2.5 rounded bg-[#d2a8ff]/10 text-[#d2a8ff]">
-              <Github size={18} />
+          <div className="p-4.5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border hover:border-purple-500/25 transition duration-200 flex items-center gap-3.5 shadow-sm">
+            <div className="p-2.5 rounded-lg bg-purple-450/5 text-purple-450 border border-purple-500/15">
+              <Github size={16} />
             </div>
             <div>
-              <span className="text-[10px] font-mono text-gh-mute uppercase">GitHub Node</span>
-              <a href={details.github} target="_blank" rel="noopener noreferrer" className="block text-xs font-mono text-gh-text hover:text-[#d2a8ff] transition mt-0.5">
+              <span className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">GitHub Node</span>
+              <a href={details.github} target="_blank" rel="noopener noreferrer" className="block text-xs font-mono text-white hover:text-purple-450 transition mt-0.5 font-semibold">
                 {details.github.replace("https://", "")}
               </a>
             </div>
           </div>
 
           {/* LinkedIn Card */}
-          <div className="p-4 rounded-lg bg-gh-panel border border-gh-border hover:border-[#58a6ff]/40 transition duration-200 flex items-center gap-3.5">
-            <div className="p-2.5 rounded bg-[#58a6ff]/10 text-[#58a6ff]">
-              <Linkedin size={18} />
+          <div className="p-4.5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border hover:border-sky-500/25 transition duration-200 flex items-center gap-3.5 shadow-sm">
+            <div className="p-2.5 rounded-lg bg-sky-450/5 text-sky-450 border border-sky-500/15">
+              <Linkedin size={16} />
             </div>
             <div>
-              <span className="text-[10px] font-mono text-gh-mute uppercase">Professional Network</span>
-              <a href={details.linkedin} target="_blank" rel="noopener noreferrer" className="block text-xs font-mono text-gh-text hover:text-[#58a6ff] transition mt-0.5">
+              <span className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">Professional Network</span>
+              <a href={details.linkedin} target="_blank" rel="noopener noreferrer" className="block text-xs font-mono text-white hover:text-sky-450 transition mt-0.5 font-semibold">
                 {details.linkedin.replace("https://", "")}
               </a>
             </div>
@@ -713,65 +737,65 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
         </div>
 
         {/* Live Form Submission Handshake */}
-        <div className="p-6 rounded-lg bg-gh-panel border border-gh-border">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-            <h3 className="text-sm font-mono font-bold text-white flex items-center gap-2">
-              <Terminal size={16} className="text-[#7ee787]" />
-              Direct Message & Email Dispatch to emailsristi@gmail.com
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h3 className="text-xs sm:text-sm font-sans font-bold text-white flex items-center gap-2">
+              <Terminal size={15} className="text-indigo-400" />
+              Direct Message API Form
             </h3>
-            <span className="px-2.5 py-1 rounded bg-[#7ee787]/10 text-[#7ee787] text-[10px] font-mono font-bold border border-[#7ee787]/20 self-start sm:self-auto">
-              Direct Mail Enabled
+            <span className="px-2.5 py-1 rounded-full bg-emerald-400/5 text-emerald-400 text-[9.5px] font-mono font-bold border border-emerald-500/15 self-start sm:self-auto tracking-wider">
+              Direct Mail Ingress Enabled
             </span>
           </div>
-          <p className="text-xs text-gh-mute mb-4 font-sans leading-relaxed">
-            Submitting this form dispatches the message directly to <strong className="text-white">emailsristi@gmail.com</strong> AND logs the transaction to the live <span className="font-mono text-[#58a6ff]">/messages</span> record table right inside the app.
+          <p className="text-xs text-slate-400 mb-4 font-sans leading-relaxed">
+            Submitting this payload dispatches the message directly to <strong className="text-white">emailsristi@gmail.com</strong> and appends it to the transient dashboard <span className="font-mono text-indigo-400 font-bold hover:underline cursor-pointer" onClick={() => onNavigate("/messages")}>/messages</span> records.
           </p>
 
           <form onSubmit={handleFormSubmit} className="space-y-4 font-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-gh-mute tracking-wider">payload_name *</label>
+              <div className="space-y-1.5">
+                <label className="text-[9px] uppercase font-bold text-gh-mute tracking-wider block">payload_name *</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Recruiter Name" 
                   value={contactForm.name}
                   onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
-                  className="w-full px-3 py-2 text-xs text-gh-text bg-[#0d1117] rounded border border-gh-border outline-none focus:border-[#58a6ff] transition font-mono"
+                  className="w-full px-3 py-2 text-xs text-white bg-[#090b10] rounded-md border border-gh-border outline-none focus:border-indigo-500/60 focus:shadow-[0_0_8px_rgba(99,102,241,0.1)] transition font-mono shadow-inner"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-gh-mute tracking-wider">payload_email *</label>
+              <div className="space-y-1.5">
+                <label className="text-[9px] uppercase font-bold text-gh-mute tracking-wider block">payload_email *</label>
                 <input 
                   type="text" 
                   placeholder="e.g. name@company.com" 
                   value={contactForm.email}
                   onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
-                  className="w-full px-3 py-2 text-xs text-gh-text bg-[#0d1117] rounded border border-gh-border outline-none focus:border-[#58a6ff] transition font-mono"
+                  className="w-full px-3 py-2 text-xs text-white bg-[#090b10] rounded-md border border-gh-border outline-none focus:border-indigo-500/60 focus:shadow-[0_0_8px_rgba(99,102,241,0.1)] transition font-mono shadow-inner"
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase font-bold text-gh-mute tracking-wider">message_string *</label>
+            <div className="space-y-1.5">
+              <label className="text-[9px] uppercase font-bold text-gh-mute tracking-wider block">message_string *</label>
               <textarea 
                 rows={3}
                 placeholder="Write message details... E.g. 'Hey Sristi, we want to interview you for a senior backend position!'" 
                 value={contactForm.message}
                 onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
-                className="w-full px-3 py-2 text-xs text-gh-text bg-[#0d1117] rounded border border-gh-border outline-none focus:border-[#58a6ff] transition font-mono"
+                className="w-full px-3 py-2 text-xs text-white bg-[#090b10] rounded-md border border-gh-border outline-none focus:border-indigo-500/60 focus:shadow-[0_0_8px_rgba(99,102,241,0.1)] transition font-mono resize-none leading-relaxed shadow-inner"
               />
             </div>
 
             {formError && (
-              <div className="text-rose-400 text-xs font-mono">
+              <div className="text-rose-400 text-xs font-mono flex items-center gap-1">
                 ⚠️ Error: {formError}
               </div>
             )}
 
             {isSubmitted ? (
-              <div className="p-3 bg-[#7ee787]/10 border border-[#7ee787]/20 rounded flex items-center gap-2 text-[#7ee787] text-xs">
-                <Check size={14} /> Message sent directly to Sristi! HTTP 201 Created. Check /messages log to view transaction.
+              <div className="p-3.5 bg-emerald-400/5 border border-emerald-500/15 rounded-md flex items-center gap-2 text-emerald-400 text-xs font-sans shadow-sm leading-relaxed">
+                <Check size={14} className="flex-shrink-0" /> Message dispatched directly to Sristi! (HTTP 201 Created). Select GET /messages to inspect.
               </div>
             ) : (
               <div className="flex flex-wrap items-center gap-3">
@@ -779,9 +803,9 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                   type="submit"
                   id="btn-vis-post-contact"
                   disabled={isSending}
-                  className="px-4 py-2 rounded bg-gh-green hover:bg-gh-green-hover disabled:opacity-50 text-white font-bold text-xs transition duration-200 flex items-center gap-1.5 cursor-pointer font-mono"
+                  className="px-4 py-2.5 rounded-md bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-semibold text-xs transition duration-200 flex items-center gap-1.5 cursor-pointer font-sans shadow-md hover:shadow-[0_0_12px_rgba(99,102,241,0.25)]"
                 >
-                  <Mail size={14} />
+                  <Mail size={13} />
                   {isSending ? "Sending Email..." : "Send Message"}
                 </button>
 
@@ -793,16 +817,16 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
                     setCopiedEmail(true);
                     setTimeout(() => setCopiedEmail(false), 2500);
                   }}
-                  className="px-4 py-2 rounded bg-[#21262d] hover:bg-[#30363d] text-gh-text text-xs font-mono border border-gh-border transition duration-200 flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2.5 rounded-md bg-white/[0.03] hover:bg-white/[0.06] text-slate-350 text-xs font-mono border border-gh-border transition duration-200 flex items-center gap-1.5 cursor-pointer hover:border-indigo-500/30"
                 >
                   {copiedEmail ? (
                     <>
-                      <Check size={13} className="text-[#7ee787]" />
-                      <span className="text-[#7ee787]">Copied to Clipboard!</span>
+                      <Check size={12} className="text-emerald-400" />
+                      <span className="text-emerald-400">Copied!</span>
                     </>
                   ) : (
                     <>
-                      <Copy size={13} />
+                      <Copy size={12} />
                       <span>Copy Email (emailsristi@gmail.com)</span>
                     </>
                   )}
@@ -818,32 +842,32 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   // 7. Dynamic Posted Messages logger (/messages)
   if (path === "/messages") {
     return (
-      <div className="space-y-4 pt-1 animate-fadeIn">
+      <div className="space-y-4 pt-1 font-sans">
         <div className="flex justify-between items-center px-1">
-          <span className="text-xs font-mono text-gh-mute">Database Record Logs: {messagesList.length}</span>
-          <span className="text-[10px] font-mono text-[#58a6ff]">Table: user_contact_handshakes</span>
+          <span className="text-[10px] font-mono text-gh-mute uppercase font-bold tracking-wider">Database Record Logs: {messagesList.length}</span>
+          <span className="text-[9.5px] font-mono text-indigo-400 bg-indigo-500/5 border border-indigo-500/15 px-2.5 py-0.5 rounded-full font-bold tracking-wider">Table: user_contact_handshakes</span>
         </div>
 
         {messagesList.length === 0 ? (
-          <div className="p-12 text-center rounded-lg bg-gh-panel border border-gh-border">
-            <MessageSquare className="mx-auto text-gh-mute mb-3" size={32} />
-            <h4 className="text-sm font-mono text-gh-text font-bold mb-1">Database Table Empty</h4>
-            <p className="text-xs text-gh-mute max-w-sm mx-auto">
-              Please route to POST /contact to send Sristi a quick message, writing details into this active session's log cache.
+          <div className="p-12 text-center rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+            <MessageSquare className="mx-auto text-gh-mute mb-3.5 opacity-60 animate-bounce" size={28} />
+            <h4 className="text-sm font-sans text-white font-bold mb-1">Database Table Empty</h4>
+            <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+              Please route to POST /contact to send Sristi a direct handshake payload, writing details into this active session database.
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             {messagesList.map((msg, i) => (
-              <div key={i} className="p-4 rounded-lg bg-gh-panel border border-gh-border font-mono text-xs">
-                <div className="flex justify-between items-center border-b border-gh-border pb-2 mb-2">
-                  <span className="text-[#7ee787] font-bold">UID: {msg.id}</span>
-                  <span className="text-gh-mute text-[10px]">{msg.timestamp}</span>
+              <div key={i} className="p-4 rounded-xl bg-[#11141a]/60 border border-gh-border/80 shadow-inner font-mono text-xs hover:border-indigo-500/15 transition duration-150">
+                <div className="flex justify-between items-center border-b border-gh-border/50 pb-2.5 mb-2.5">
+                  <span className="text-emerald-400 font-bold">UID: {msg.id}</span>
+                  <span className="text-gh-mute text-[10px] font-sans">{msg.timestamp}</span>
                 </div>
-                <div className="space-y-1 text-gh-text">
-                  <div><span className="text-gh-mute">Name:</span> <span className="text-white font-semibold">{msg.name}</span></div>
-                  <div><span className="text-gh-mute">Email:</span> <span className="text-white">{msg.email}</span></div>
-                  <div className="pt-1.5 border-t border-gh-border/40 mt-1.5 text-white font-sans italic text-[13px]">
+                <div className="space-y-1.5 text-slate-300">
+                  <div><span className="text-gh-mute font-sans">Name:</span> <span className="text-white font-semibold">{msg.name}</span></div>
+                  <div><span className="text-gh-mute font-sans">Email:</span> <span className="text-white font-medium">{msg.email}</span></div>
+                  <div className="pt-2 border-t border-gh-border/40 mt-2 text-white font-sans italic text-[12.5px] leading-relaxed">
                     "{msg.message}"
                   </div>
                 </div>
@@ -858,35 +882,35 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   // 8. Stats metrics Route
   if (path === "/stats") {
     return (
-      <div className="space-y-6 pt-1 animate-fadeIn text-gh-text">
-        <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
-          <h3 className="text-sm font-mono font-bold text-white mb-3">Live Server Performance Console</h3>
+      <div className="space-y-6 pt-1 text-gh-text font-sans">
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
+          <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-indigo-400 mb-3.5">Live Server Performance Console</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-3.5 rounded bg-[#0d1117] border border-gh-border">
-              <div className="text-[10px] font-mono text-gh-mute uppercase">Uptime</div>
-              <div className="text-lg font-bold font-mono text-white mt-0.5">99.998%</div>
+            <div className="p-3.5 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner hover:border-indigo-500/20 transition duration-150 group">
+              <div className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">Uptime</div>
+              <div className="text-lg font-bold font-mono text-white mt-1 group-hover:text-indigo-400 transition-colors">99.998%</div>
             </div>
-            <div className="p-3.5 rounded bg-[#0d1117] border border-gh-border">
-              <div className="text-[10px] font-mono text-gh-mute uppercase">Socket Pools</div>
-              <div className="text-lg font-bold font-mono text-white mt-0.5">14,204 active</div>
+            <div className="p-3.5 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner hover:border-purple-500/20 transition duration-150 group">
+              <div className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">Socket Pools</div>
+              <div className="text-lg font-bold font-mono text-white mt-1 group-hover:text-purple-400 transition-colors">14,204 <span className="text-[10px] font-sans text-gh-mute font-normal">active</span></div>
             </div>
-            <div className="p-3.5 rounded bg-[#0d1117] border border-gh-border">
-              <div className="text-[10px] font-mono text-gh-mute uppercase">CPU Usage</div>
-              <div className="text-lg font-bold font-mono text-[#7ee787] mt-0.5">1.4% avg</div>
+            <div className="p-3.5 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner hover:border-emerald-500/20 transition duration-150 group">
+              <div className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">CPU Usage</div>
+              <div className="text-lg font-bold font-mono text-emerald-400 mt-1">1.4% <span className="text-[10px] font-sans text-gh-mute font-normal">avg</span></div>
             </div>
-            <div className="p-3.5 rounded bg-[#0d1117] border border-gh-border">
-              <div className="text-[10px] font-mono text-gh-mute uppercase">Daily Request Peak</div>
-              <div className="text-lg font-bold font-mono text-[#58a6ff] mt-0.5">4.2M GETs</div>
+            <div className="p-3.5 rounded-xl bg-[#090b10]/60 border border-gh-border/80 shadow-inner hover:border-sky-500/20 transition duration-150 group">
+              <div className="text-[9px] font-mono text-gh-mute uppercase font-bold tracking-wider">Daily Requests</div>
+              <div className="text-lg font-bold font-mono text-sky-400 mt-1">4.2M <span className="text-[10px] font-sans text-gh-mute font-normal">GETs</span></div>
             </div>
           </div>
         </div>
 
         {/* Real-time Graph simulation */}
-        <div className="p-5 rounded-lg bg-gh-panel border border-gh-border">
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-[#11141a] to-[#141822] border border-gh-border shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h4 className="text-xs font-mono uppercase text-[#58a6ff] font-bold">API latency distribution history (p95)</h4>
-            <span className="flex items-center gap-1.5 text-[10px] font-mono text-[#7ee787]">
-              <span className="w-2 h-2 rounded-full bg-[#7ee787] animate-pulse" /> Live Telemetry Link
+            <h4 className="text-[10px] font-mono uppercase text-indigo-400 font-bold tracking-wider">API latency distribution history (p95)</h4>
+            <span className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-400/5 border border-emerald-500/15 px-2 py-0.5 rounded-full font-bold tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Telemetry Ingress
             </span>
           </div>
           <div className="h-28 flex items-end gap-1.5 pt-4">
@@ -894,17 +918,19 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
               <div key={index} className="flex-grow group relative flex flex-col justify-end h-full">
                 <div 
                   style={{ height: `${height * 2}%` }} 
-                  className={`w-full rounded-t-sm transition-all duration-300 group-hover:bg-[#58a6ff] ${
-                    height > 30 ? "bg-[#d29922]/80" : "bg-[#7ee787]/80"
+                  className={`w-full rounded-t-md transition-all duration-300 group-hover:opacity-100 ${
+                    height > 30 
+                      ? "bg-gradient-to-t from-amber-500 to-orange-400" 
+                      : "bg-gradient-to-t from-indigo-600 to-indigo-400 opacity-80"
                   }`} 
                 />
-                <div className="opacity-0 group-hover:opacity-100 absolute -top-6 left-1/2 -translate-x-1/2 bg-[#0d1117] border border-gh-border text-[9px] font-mono text-gh-text px-1 py-0.5 rounded shadow whitespace-nowrap transition duration-150 z-20">
+                <div className="opacity-0 group-hover:opacity-100 absolute -top-7 left-1/2 -translate-x-1/2 bg-[#090b10]/95 backdrop-blur-sm border border-gh-border text-[9px] font-mono text-white px-1.5 py-0.5 rounded-md shadow-md whitespace-nowrap transition-all duration-150 z-20 pointer-events-none">
                   {height}ms
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-between text-[10px] font-mono text-gh-mute pt-2 border-t border-gh-border">
+          <div className="flex justify-between text-[9px] font-mono text-gh-mute pt-2.5 border-t border-gh-border/50 mt-2">
             <span>24h ago</span>
             <span>12h ago</span>
             <span>Current Execution</span>
@@ -915,7 +941,7 @@ export const VisualizerTab: React.FC<VisualizerTabProps> = ({
   }
 
   return (
-    <div className="text-gh-mute font-mono text-sm p-4 text-center">
+    <div className="text-gh-mute font-mono text-xs p-8 text-center bg-[#11141a]/30 border border-gh-border/40 rounded-xl leading-relaxed">
       Visualizer layout not configured for this endpoint. Switch to {"{ } JSON"} tab to read raw API response logs.
     </div>
   );
