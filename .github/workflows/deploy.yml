@@ -29,6 +29,8 @@ jobs:
 
       - name: Build Application
         run: npm run build
+        env:
+          VITE_GA_ID: ${{ secrets.VITE_GA_ID }}
 
       - name: Upload Build Artifacts
         uses: actions/upload-pages-artifact@v3
